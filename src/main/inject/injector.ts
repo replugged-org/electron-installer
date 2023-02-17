@@ -52,7 +52,18 @@ const getConfigDir = (): string => {
   }
 };
 
+export const download = async (): Promise<boolean> => {
+  const entryPoint = join(getConfigDir(), "replugged.asar");
+
+  // TODO: Download replugged.asar, store somewhere, update path here
+  await copyFile("PATH_TO_REPLUGGED", entryPoint);
+
+  return true;
+};
+
 export const inject = async (appDir: string): Promise<boolean> => {
+  const entryPoint = join(getConfigDir(), "replugged.asar");
+
   if (!(await correctMissingMainAsar(appDir))) return false;
   if (!(await isDiscordInstalled(appDir))) return false;
 
@@ -69,11 +80,6 @@ export const inject = async (appDir: string): Promise<boolean> => {
   } catch {
     return false;
   }
-
-  const entryPoint = join(getConfigDir(), "replugged.asar");
-
-  // TODO: Download replugged.asar, store somewhere, update path here
-  await copyFile("PATH_TO_REPLUGGED", entryPoint);
 
   await mkdir(appDir);
   await Promise.all([
