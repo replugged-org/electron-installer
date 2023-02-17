@@ -9,13 +9,13 @@
 import path from "path";
 import { BrowserWindow, app, ipcMain, shell } from "electron";
 import { resolveHtmlPath } from "./util";
+import { IpcEvents } from "./types";
+import { listInstallations } from "./inject";
 
 let mainWindow: BrowserWindow | null = null;
 
-ipcMain.on("ipc-example", (event, arg) => {
-  const msgTemplate = (pingPong: string): string => `IPC test: ${pingPong}`;
-  console.log(msgTemplate(arg));
-  event.reply("ipc-example", msgTemplate("pong"));
+ipcMain.handle(IpcEvents.GET_PLATFORMS, async () => {
+  return await listInstallations();
 });
 
 if (process.env.NODE_ENV === "production") {

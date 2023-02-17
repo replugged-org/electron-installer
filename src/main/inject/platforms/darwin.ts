@@ -1,4 +1,4 @@
-import { DiscordPlatform } from "../../../types";
+import { DiscordPlatform } from "../../types";
 
 const PATHS: Record<DiscordPlatform, string> = {
   stable: "/Applications/Discord.app/Contents/Resources/app.asar",

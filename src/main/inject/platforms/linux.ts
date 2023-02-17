@@ -1,7 +1,7 @@
 import { join } from "path";
 import { existsSync } from "fs";
 import { execSync } from "child_process";
-import { DiscordPlatform } from "../../../types";
+import { DiscordPlatform } from "../../types";
 
 const ProcessRegex: Record<DiscordPlatform, RegExp> = {
   stable: /discord$/i,

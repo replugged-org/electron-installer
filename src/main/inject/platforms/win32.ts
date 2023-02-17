@@ -1,6 +1,6 @@
 import { readdir } from "fs/promises";
 import { join } from "path";
-import { DiscordPlatform } from "../../../types";
+import { DiscordPlatform } from "../../types";
 
 const PATHS: Record<DiscordPlatform, string> = {
   stable: "Discord",

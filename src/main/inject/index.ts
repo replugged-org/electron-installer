@@ -4,7 +4,7 @@ import * as darwin from "./platforms/darwin";
 import * as linux from "./platforms/linux";
 import * as win32 from "./platforms/win32";
 import { existsSync } from "fs";
-import { DiscordPlatform, PLATFORMS, PlatformData } from "types";
+import { DiscordPlatform, PLATFORMS, PlatformData } from "../types";
 import { inject, uninject } from "./injector";
 
 const platformModules = {
