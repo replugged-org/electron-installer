@@ -1,8 +1,8 @@
-import { MemoryRouter as Router, Routes, Route } from 'react-router-dom';
-import icon from '../../assets/icon.svg';
-import './App.css';
+import { Route, MemoryRouter as Router, Routes } from "react-router-dom";
+import icon from "../../assets/icon.svg";
+import "./App.css";
 
-function Hello() {
+function Hello(): React.ReactElement {
   return (
     <div>
       <div className="Hello">
@@ -10,11 +10,7 @@ function Hello() {
       </div>
       <h1>electron-react-boilerplate</h1>
       <div className="Hello">
-        <a
-          href="https://electron-react-boilerplate.js.org/"
-          target="_blank"
-          rel="noreferrer"
-        >
+        <a href="https://electron-react-boilerplate.js.org/" target="_blank" rel="noreferrer">
           <button type="button">
             <span role="img" aria-label="books">
               📚
@@ -25,8 +21,7 @@ function Hello() {
         <a
           href="https://github.com/sponsors/electron-react-boilerplate"
           target="_blank"
-          rel="noreferrer"
-        >
+          rel="noreferrer">
           <button type="button">
             <span role="img" aria-label="folded hands">
               🙏
@@ -39,7 +34,7 @@ function Hello() {
   );
 }
 
-export default function App() {
+export default function App(): React.ReactElement {
   return (
     <Router>
       <Routes>
