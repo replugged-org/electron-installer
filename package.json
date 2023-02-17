@@ -158,6 +158,9 @@
       "repo": "electron-react-boilerplate"
     }
   },
+  "engines": {
+    "node": ">=14.0.0"
+  },
   "devEngines": {
     "node": ">=14.x",
     "pnpm": ">=7.x"
