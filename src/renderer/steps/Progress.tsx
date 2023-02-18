@@ -44,6 +44,7 @@ export function Progress({
           </div>
         ))}
       </div>
+      {/* TODO: troubleshooting steps, try again button */}
       {allDone && (
         <div className="progress-bottom">
           <button
