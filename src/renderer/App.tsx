@@ -1,11 +1,13 @@
-import { Link, Route, MemoryRouter as Router, Routes } from "react-router-dom";
+import { Route, MemoryRouter as Router, Routes } from "react-router-dom";
 import "./App.css";
-import { Download } from "./Download";
+import { Download, License } from "./steps";
+import logo from "../../assets/logo.png";
 
-function Start(): React.ReactElement {
+function Header(): React.ReactElement {
   return (
-    <div className="start-container">
-      <Link to="/download">Download</Link>
+    <div className="header">
+      <img src={logo} alt="Replugged logo" className="header-logo" />
+      <span className="header-name">Replugged Installer</span>
     </div>
   );
 }
@@ -13,10 +15,13 @@ function Start(): React.ReactElement {
 export default function App(): React.ReactElement {
   return (
     <Router>
-      <Routes>
-        <Route path="/" element={<Start />} />
-        <Route path="/download" element={<Download />} />
-      </Routes>
+      <Header />
+      <div className="wrapper">
+        <Routes>
+          <Route path="/" element={<License />} />
+          <Route path="/download" element={<Download />} />
+        </Routes>
+      </div>
     </Router>
   );
 }

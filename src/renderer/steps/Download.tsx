@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import "./Download.css";
+import "../App.css";
 
 export function Download(): React.ReactElement {
   const { ipcRenderer } = window.electron;
@@ -42,7 +43,7 @@ export function Download(): React.ReactElement {
   });
 
   return (
-    <div className="download-container">
+    <div className="page">
       <div className="download-progress">
         <div className="download-progress-bar" style={{ width: `${progress * 100}%` }} />
       </div>
