@@ -69,7 +69,6 @@
     "electron": "^23.0.0",
     "electron-builder": "^23.6.0",
     "electron-devtools-installer": "^3.2.0",
-    "electron-installer": "^1.0.3",
     "electronmon": "^2.0.2",
     "eslint": "^8.33.0",
     "eslint-config-dmitmel": "github:dmitmel/eslint-config-dmitmel",
