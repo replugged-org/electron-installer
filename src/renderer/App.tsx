@@ -21,16 +21,18 @@ export default function App(): React.ReactElement {
   const [availablePlatforms, setAvailablePlatforms] = useState<DiscordPlatform[]>([]);
 
   useEffect(() => {
-    getPlatforms().then((data) => {
-      const platforms = Object.entries(data)
-        .filter(([, value]) => value.installed)
-        .map(([key]) => key as DiscordPlatform);
+    getPlatforms()
+      .then((data) => {
+        const platforms = Object.entries(data)
+          .filter(([, value]) => value.installed)
+          .map(([key]) => key as DiscordPlatform);
 
-      setAvailablePlatforms(platforms);
-      if (platforms[0]) {
-        setPlatforms([platforms[0]]);
-      }
-    });
+        setAvailablePlatforms(platforms);
+        if (platforms[0]) {
+          setPlatforms([platforms[0]]);
+        }
+      })
+      .catch(console.error);
   }, []);
 
   return (

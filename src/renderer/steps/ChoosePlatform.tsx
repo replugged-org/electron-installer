@@ -1,7 +1,5 @@
 import { Link } from "react-router-dom";
 import { DiscordPlatform } from "../types";
-import { getPlatforms } from "../util";
-import { useEffect, useState } from "react";
 import "./ChoosePlatform.css";
 import "../App.css";
 
@@ -21,7 +19,7 @@ export function ChoosePlatform({
   platforms: DiscordPlatform[];
   setPlatforms: (platforms: DiscordPlatform[]) => void;
 }): React.ReactElement {
-  const togglePlatform = (platform: DiscordPlatform) => {
+  const togglePlatform = (platform: DiscordPlatform): void => {
     if (platforms.includes(platform)) {
       setPlatforms(platforms.filter((p) => p !== platform));
     } else {
