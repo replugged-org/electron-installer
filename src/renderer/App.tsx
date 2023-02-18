@@ -20,23 +20,30 @@ export default function App(): React.ReactElement {
   const [platforms, setPlatforms] = useState<DiscordPlatform[]>([]);
   const [availablePlatforms, setAvailablePlatforms] = useState<DiscordPlatform[]>([]);
 
+  const init = async (reset = false): Promise<void> => {
+    if (reset) {
+      setAction("plug");
+      setPlatforms([]);
+      setAvailablePlatforms([]);
+    }
+
+    const data = await getPlatforms();
+    const platforms = Object.entries(data)
+      .filter(([, value]) => value.installed)
+      .map(([key]) => key as DiscordPlatform);
+
+    setAvailablePlatforms(platforms);
+    if (platforms[0]) {
+      setPlatforms([platforms[0]]);
+    }
+  };
+
   useEffect(() => {
     window.electron.ipcRenderer.on("ERROR", (event) => {
       console.error(event);
     });
 
-    getPlatforms()
-      .then((data) => {
-        const platforms = Object.entries(data)
-          .filter(([, value]) => value.installed)
-          .map(([key]) => key as DiscordPlatform);
-
-        setAvailablePlatforms(platforms);
-        if (platforms[0]) {
-          setPlatforms([platforms[0]]);
-        }
-      })
-      .catch(console.error);
+    void init();
   }, []);
 
   return (
@@ -54,10 +61,14 @@ export default function App(): React.ReactElement {
                 availablePlatforms={availablePlatforms}
                 platforms={platforms}
                 setPlatforms={setPlatforms}
+                init={init}
               />
             }
           />
-          <Route path="/progress" element={<Progress action={action} platforms={platforms} />} />
+          <Route
+            path="/progress"
+            element={<Progress action={action} platforms={platforms} init={init} />}
+          />
         </Routes>
       </div>
     </Router>

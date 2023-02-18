@@ -67,6 +67,22 @@ body {
   font-weight: 600;
 }
 
+a:not(.button),
+a:not(.button):hover,
+a:not(.button):active,
+a:not(.button):visited {
+  color: var(--blurple);
+  text-decoration: underline;
+  transition: -webkit-filter 0.2s;
+  transition: filter 0.2s;
+  transition: filter 0.2s, -webkit-filter 0.2s;
+}
+
+a:not(.button):hover {
+  -webkit-filter: brightness(0.9);
+  filter: brightness(0.9);
+}
+
 .button {
   background-color: var(--blurple);
   transition: -webkit-filter 0.2s;
@@ -85,11 +101,17 @@ body {
   box-sizing: border-box;
 }
 
+.button-disabled,
+.button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
 .button-secondary {
   background-color: var(--background-secondary);
 }
 
-.button:hover {
+.button:not(.button-disabled):not(:disabled):hover {
   -webkit-filter: brightness(0.9);
   filter: brightness(0.9);
 }

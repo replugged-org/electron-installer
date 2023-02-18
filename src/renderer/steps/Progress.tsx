@@ -3,21 +3,29 @@ import { PLATFORM_LABELS, doAction } from "../util";
 import { useEffect, useState } from "react";
 import "./Progress.css";
 import "../App.css";
+import { useNavigate } from "react-router-dom";
 
 export function Progress({
   platforms,
   action,
+  init,
 }: {
   platforms: DiscordPlatform[];
   action: "plug" | "unplug";
+  init: (reset?: boolean) => Promise<void>;
 }): React.ReactElement {
+  const navigate = useNavigate();
+
   const [done, setDone] = useState<DiscordPlatform[]>([]);
   const [error, setError] = useState<DiscordPlatform[]>([]);
 
   const allDone = done.length + error.length === platforms.length;
   const hasError = error.length > 0;
 
-  useEffect(() => {
+  const run = (): void => {
+    setDone([]);
+    setError([]);
+
     platforms.forEach(async (platform) => {
       const res = await doAction(platform, action);
       if (res) {
@@ -26,7 +34,9 @@ export function Progress({
         setError((prev) => [...prev, platform]);
       }
     });
-  }, []);
+  };
+
+  useEffect(run, []);
 
   return (
     <div className="page progress-page">
@@ -44,16 +54,33 @@ export function Progress({
           </div>
         ))}
       </div>
-      {/* TODO: troubleshooting steps, try again button */}
+      {hasError && (
+        <div className="progress-note">
+          Please make sure Discord is closed and try again.
+          <br />
+          Need help? Join our{" "}
+          <a target="_blank" href="https://discord.gg/replugged">
+            Discord server
+          </a>
+          .
+        </div>
+      )}
       {allDone && (
         <div className="progress-bottom">
-          <button
-            className="button button-secondary"
-            onClick={() => {
-              window.location.reload();
-            }}>
-            Start Over
-          </button>
+          {hasError ? (
+            <button className="button button-secondary" onClick={run}>
+              Try Again
+            </button>
+          ) : (
+            <button
+              className="button button-secondary"
+              onClick={async () => {
+                await init(true);
+                navigate("/action");
+              }}>
+              Start Over
+            </button>
+          )}
           <button
             className="button"
             onClick={() => {

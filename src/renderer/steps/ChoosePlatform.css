@@ -35,3 +35,7 @@
 .platform-bottom .button {
   min-width: 100px;
 }
+
+.platform-troubleshooting {
+  margin: 25px 0px;
+}
