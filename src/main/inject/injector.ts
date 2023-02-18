@@ -6,14 +6,10 @@ import { IpcMainInvokeEvent } from "electron";
 const DOWNLOAD_URL =
   "https://github.com/replugged-org/replugged/releases/latest/download/replugged.asar";
 
-const moveToOrig = (appDir: string): boolean => {
+const moveToOrig = (appDir: string): void => {
   // Check if we need to move app.asar to app.orig.asar
   if (!existsSync(join(appDir, "..", "app.orig.asar"))) {
-    try {
-      renameSync(appDir, join(appDir, "..", "app.orig.asar"));
-    } catch {
-      return false;
-    }
+    renameSync(appDir, join(appDir, "..", "app.orig.asar"));
   }
 
   // In case app.asar still exists, delete it
@@ -23,8 +19,6 @@ const moveToOrig = (appDir: string): boolean => {
       force: true,
     });
   }
-
-  return true;
 };
 
 const getConfigDir = (): string => {
@@ -70,15 +64,15 @@ export const download = async (event: IpcMainInvokeEvent): Promise<void> => {
   });
 };
 
-export const inject = (appDir: string): boolean => {
+export const inject = (appDir: string): void => {
   const entryPoint = join(getConfigDir(), "replugged.asar");
 
   if (appDir.includes("flatpak")) {
+    throw new Error("Flatpak is not supported yet");
     // TODO
-    return false;
   }
 
-  if (!moveToOrig(appDir)) return false;
+  moveToOrig(appDir);
 
   mkdirSync(appDir);
   writeFileSync(
@@ -92,12 +86,9 @@ export const inject = (appDir: string): boolean => {
       name: "discord",
     }),
   );
-
-  return true;
 };
 
-export const uninject = (appDir: string): boolean => {
+export const uninject = (appDir: string): void => {
   rmSync(appDir, { recursive: true, force: true });
   renameSync(join(appDir, "..", "app.orig.asar"), appDir);
-  return true;
 };

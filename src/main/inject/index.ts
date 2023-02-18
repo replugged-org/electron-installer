@@ -48,12 +48,14 @@ export async function plug(platform: DiscordPlatform): Promise<boolean> {
     const { plugged } = await getInstallation(platform);
     if (plugged) return false;
   }
-  return inject(path);
+  inject(path);
+  return true;
 }
 
 export async function unplug(platform: DiscordPlatform): Promise<boolean> {
   const { plugged, path } = await getInstallation(platform);
   if (!path) return false;
   if (!plugged) return false;
-  return uninject(path);
+  uninject(path);
+  return true;
 }
