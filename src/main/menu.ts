@@ -1,4 +1,4 @@
-import { app, Menu, shell, BrowserWindow, MenuItemConstructorOptions } from "electron";
+import { BrowserWindow, Menu, MenuItemConstructorOptions, app, shell } from "electron";
 
 interface DarwinMenuItemConstructorOptions extends MenuItemConstructorOptions {
   selector?: string;
@@ -6,13 +6,13 @@ interface DarwinMenuItemConstructorOptions extends MenuItemConstructorOptions {
 }
 
 export default class MenuBuilder {
-  mainWindow: BrowserWindow;
+  public mainWindow: BrowserWindow;
 
-  constructor(mainWindow: BrowserWindow) {
+  public constructor(mainWindow: BrowserWindow) {
     this.mainWindow = mainWindow;
   }
 
-  buildMenu(): Menu {
+  public buildMenu(): Menu {
     if (process.env.NODE_ENV === "development" || process.env.DEBUG_PROD === "true") {
       this.setupDevelopmentEnvironment();
     }
@@ -26,7 +26,7 @@ export default class MenuBuilder {
     return menu;
   }
 
-  setupDevelopmentEnvironment(): void {
+  public setupDevelopmentEnvironment(): void {
     this.mainWindow.webContents.on("context-menu", (_, props) => {
       const { x, y } = props;
 
@@ -41,7 +41,7 @@ export default class MenuBuilder {
     });
   }
 
-  buildDarwinTemplate(): MenuItemConstructorOptions[] {
+  public buildDarwinTemplate(): MenuItemConstructorOptions[] {
     const subMenuAbout: DarwinMenuItemConstructorOptions = {
       label: "Replugged Installer",
       submenu: [
@@ -125,13 +125,13 @@ export default class MenuBuilder {
         {
           label: "Replugged Website",
           click() {
-            shell.openExternal("https://replugged.dev");
+            void shell.openExternal("https://replugged.dev");
           },
         },
         {
           label: "Discord",
           click() {
-            shell.openExternal("https://discord.gg/replugged");
+            void shell.openExternal("https://discord.gg/replugged");
           },
         },
       ],
@@ -145,7 +145,7 @@ export default class MenuBuilder {
     return [subMenuAbout, subMenuView, subMenuWindow, subMenuHelp];
   }
 
-  buildDefaultTemplate() {
+  public buildDefaultTemplate(): MenuItemConstructorOptions[] {
     const templateDefault = [
       {
         label: "&File",
@@ -197,13 +197,13 @@ export default class MenuBuilder {
           {
             label: "Replugged Website",
             click() {
-              shell.openExternal("https://replugged.dev");
+              void shell.openExternal("https://replugged.dev");
             },
           },
           {
             label: "Discord",
             click() {
-              shell.openExternal("https://discord.gg/replugged");
+              void shell.openExternal("https://discord.gg/replugged");
             },
           },
         ],

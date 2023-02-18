@@ -34,15 +34,6 @@ export const correctMissingMainAsar = async (appDir: string): Promise<boolean> =
   return true;
 };
 
-export const isPlugged = async (appDir: string): Promise<boolean> => {
-  try {
-    await stat(join(appDir, "..", "app.orig.asar"));
-    return true;
-  } catch {
-    return false;
-  }
-};
-
 const getConfigDir = (): string => {
   switch (process.platform) {
     case "win32":
@@ -91,12 +82,9 @@ export const inject = async (appDir: string): Promise<boolean> => {
   if (!(await correctMissingMainAsar(appDir))) return false;
   if (!(await isDiscordInstalled(appDir))) return false;
 
-  if (await isPlugged(appDir)) {
-    return false;
-  }
-
   if (appDir.includes("flatpak")) {
     // TODO
+    return false;
   }
 
   try {
@@ -129,10 +117,6 @@ export const uninject = async (appDir: string): Promise<boolean> => {
     !(await isDiscordInstalled(join(appDir, "..", "app.orig.asar")))
   )
     return false;
-
-  if (!(await isPlugged(appDir))) {
-    return false;
-  }
 
   await rm(appDir, { recursive: true, force: true });
   await rename(join(appDir, "..", "app.orig.asar"), appDir);

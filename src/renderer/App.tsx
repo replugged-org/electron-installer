@@ -1,6 +1,6 @@
 import { Route, MemoryRouter as Router, Routes } from "react-router-dom";
 import "./App.css";
-import { ChooseAction, ChoosePlatform, Download, License } from "./steps";
+import { ChooseAction, ChoosePlatform, Download, License, Progress } from "./steps";
 import logo from "../../assets/logo.png";
 import { useEffect, useState } from "react";
 import { DiscordPlatform } from "./types";
@@ -21,6 +21,10 @@ export default function App(): React.ReactElement {
   const [availablePlatforms, setAvailablePlatforms] = useState<DiscordPlatform[]>([]);
 
   useEffect(() => {
+    window.electron.ipcRenderer.on("ERROR", (event) => {
+      console.error(event);
+    });
+
     getPlatforms()
       .then((data) => {
         const platforms = Object.entries(data)
@@ -53,6 +57,7 @@ export default function App(): React.ReactElement {
               />
             }
           />
+          <Route path="/progress" element={<Progress action={action} platforms={platforms} />} />
         </Routes>
       </div>
     </Router>

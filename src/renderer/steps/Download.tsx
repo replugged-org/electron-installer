@@ -13,7 +13,6 @@ export function Download(): React.ReactElement {
   const [step, setStep] = useState<"loading" | "downloading" | "done" | "error">("loading");
 
   useEffect(() => {
-    console.log("useEffect");
     setStartTime(Date.now());
     void ipcRenderer.invoke("DOWNLOAD");
   }, []);

@@ -2,13 +2,7 @@ import { Link } from "react-router-dom";
 import { DiscordPlatform } from "../types";
 import "./ChoosePlatform.css";
 import "../App.css";
-
-const PLATFORM_LABELS: Record<DiscordPlatform, string> = {
-  stable: "Discord Stable",
-  ptb: "Discord PTB",
-  canary: "Discord Canary",
-  development: "Discord Development",
-};
+import { PLATFORM_LABELS } from "../util";
 
 export function ChoosePlatform({
   availablePlatforms,
