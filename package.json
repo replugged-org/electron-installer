@@ -114,7 +114,6 @@
           "x64"
         ]
       },
-      "notarize": false,
       "type": "distribution",
       "hardenedRuntime": true,
       "entitlements": "assets/entitlements.mac.plist",
