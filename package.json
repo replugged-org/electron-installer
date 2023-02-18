@@ -17,7 +17,6 @@
     "build:main": "cross-env NODE_ENV=production TS_NODE_TRANSPILE_ONLY=true webpack --config ./.erb/configs/webpack.config.main.prod.ts",
     "build:renderer": "cross-env NODE_ENV=production TS_NODE_TRANSPILE_ONLY=true webpack --config ./.erb/configs/webpack.config.renderer.prod.ts",
     "postinstall": "ts-node ./.erb/scripts/check-native-dep.js && electron-builder install-app-deps && cross-env NODE_ENV=development TS_NODE_TRANSPILE_ONLY=true webpack --config ./.erb/configs/webpack.config.renderer.dev.dll.ts",
-    "package": "ts-node ./.erb/scripts/clean.js dist && pnpm run build && electron-builder build --publish never",
     "rebuild": "electron-rebuild --parallel --types prod,dev,optional --module-dir release/app",
     "start": "ts-node ./.erb/scripts/check-port-in-use.js && pnpm run start:renderer",
     "start:main": "cross-env NODE_ENV=development electronmon -r ts-node/register/transpile-only .",
@@ -30,7 +29,13 @@
     "prettier:fix": "prettier ./src --write",
     "eslint:fix": "eslint ./src --fix",
     "lint": "pnpm run prettier:check && pnpm run eslint:check && pnpm run cspell:check && pnpm run typescript:check",
-    "lint:fix": "pnpm run prettier:fix && pnpm run eslint:fix && pnpm run cspell:check && pnpm run typescript:check"
+    "lint:fix": "pnpm run prettier:fix && pnpm run eslint:fix && pnpm run cspell:check && pnpm run typescript:check",
+    "prepackage": "ts-node ./.erb/scripts/clean.js dist && pnpm run build",
+    "package": "pnpm run prepackage && electron-builder build --publish never",
+    "package:win": "pnpm run prepackage && electron-builder build --win --publish never",
+    "package:mac": "pnpm run prepackage && electron-builder build --mac --publish never",
+    "package:linux": "pnpm run prepackage && electron-builder build --linux --publish never",
+    "package:all": "pnpm run prepackage && electron-builder build --win --mac --linux --publish never"
   },
   "browserslist": {
     "production": [
