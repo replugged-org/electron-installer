@@ -26,6 +26,7 @@ specifiers:
   electron-builder: ^23.6.0
   electron-debug: ^3.2.0
   electron-devtools-installer: ^3.2.0
+  electron-installer: ^1.0.3
   electron-log: ^4.4.8
   electron-updater: ^5.3.0
   electronmon: ^2.0.2
@@ -94,6 +95,7 @@ devDependencies:
   electron: 23.1.0
   electron-builder: 23.6.0
   electron-devtools-installer: 3.2.0
+  electron-installer: 1.0.3
   electronmon: 2.0.2
   eslint: 8.34.0
   eslint-config-dmitmel: github.com/dmitmel/eslint-config-dmitmel/690f1b1121d342fcc8ee511ca9f2af7502f53db6_eslint@8.34.0
@@ -1858,6 +1860,18 @@ packages:
     dependencies:
       '@jridgewell/resolve-uri': 3.1.0
       '@jridgewell/sourcemap-codec': 1.4.14
+    dev: true
+
+  /@kogs/argv/1.2.3:
+    resolution: {integrity: sha512-rn+pvV0BYlnmM8BbPDUZursYW3R6T/6EJXi4dJErG99ldvVXwX0R3nCIJHn7mXT7aw1Li0EDo0TvEToZySqwKA==}
+    dependencies:
+      '@kogs/logger': 3.3.7
+    dev: true
+
+  /@kogs/logger/3.3.7:
+    resolution: {integrity: sha512-Pq9vpCyomgDSnZ83k3Wn2+IbtXq+ibedQT9vAmPOsKvfeaL0rnfu4YbuZwT3Q3Ro15NrcLsXDTtfv30FFjboFg==}
+    dependencies:
+      picocolors: 1.0.0
     dev: true
 
   /@leichtgewicht/ip-codec/2.0.4:
@@ -4329,6 +4343,15 @@ packages:
       semver: 7.3.8
       tslib: 2.5.0
       unzip-crx-3: 0.2.0
+    dev: true
+
+  /electron-installer/1.0.3:
+    resolution: {integrity: sha512-2PfE9lzpqsqQuD8WJGYDcp525LapvAmvDrRHk/LftQ/ye54OCxfES02rXYBWTttD2u/PA8QrJCTuYZiERKPf3A==}
+    hasBin: true
+    dependencies:
+      '@kogs/argv': 1.2.3
+      '@kogs/logger': 3.3.7
+      jszip: 3.10.1
     dev: true
 
   /electron-is-accelerator/0.1.2:
@@ -8987,7 +9010,7 @@ packages:
     dev: true
 
   github.com/dmitmel/eslint-config-dmitmel/690f1b1121d342fcc8ee511ca9f2af7502f53db6_eslint@8.34.0:
-    resolution: {commit: 690f1b1121d342fcc8ee511ca9f2af7502f53db6, repo: git+ssh://git@github.com/dmitmel/eslint-config-dmitmel.git, type: git}
+    resolution: {tarball: https://codeload.github.com/dmitmel/eslint-config-dmitmel/tar.gz/690f1b1121d342fcc8ee511ca9f2af7502f53db6}
     id: github.com/dmitmel/eslint-config-dmitmel/690f1b1121d342fcc8ee511ca9f2af7502f53db6
     name: eslint-config-dmitmel
     version: 8.2.2
