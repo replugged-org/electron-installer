@@ -9,6 +9,7 @@
 import path from "path";
 import { BrowserWindow, app, shell } from "electron";
 import { resolveHtmlPath } from "./util";
+import MenuBuilder from "./menu";
 import "./ipc";
 
 let mainWindow: BrowserWindow | null = null;
@@ -61,6 +62,9 @@ const createWindow = (): void => {
         : path.join(__dirname, "../../.erb/dll/preload.js"),
     },
   });
+
+  const menuBuilder = new MenuBuilder(mainWindow);
+  menuBuilder.buildMenu();
 
   void mainWindow.loadURL(resolveHtmlPath("index.html"));
 
