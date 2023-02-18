@@ -48,7 +48,7 @@ export default class MenuBuilder {
         { label: "Services", submenu: [] },
         { type: "separator" },
         {
-          label: "Hide ElectronReact",
+          label: "Hide Replugged Installer",
           accelerator: "Command+H",
           selector: "hide:",
         },
