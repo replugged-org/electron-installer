@@ -19,6 +19,7 @@
 .progress-button {
   width: 100%;
   background-color: var(--background-secondary);
+  pointer-events: none;
 }
 
 .progress-button-done {

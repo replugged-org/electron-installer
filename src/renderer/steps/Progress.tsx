@@ -47,6 +47,13 @@ export function Progress({
       {allDone && (
         <div className="progress-bottom">
           <button
+            className="button button-secondary"
+            onClick={() => {
+              window.location.reload();
+            }}>
+            Start Over
+          </button>
+          <button
             className="button"
             onClick={() => {
               window.close();
