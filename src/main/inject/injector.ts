@@ -113,7 +113,7 @@ export const inject = async (appDir: string): Promise<boolean> => {
 
 export const uninject = async (appDir: string): Promise<boolean> => {
   if (
-    !(await isDiscordInstalled(appDir)) &&
+    !(await isDiscordInstalled(appDir)) ||
     !(await isDiscordInstalled(join(appDir, "..", "app.orig.asar")))
   )
     return false;
