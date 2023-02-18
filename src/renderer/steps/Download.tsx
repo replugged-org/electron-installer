@@ -1,8 +1,11 @@
 import { useEffect, useState } from "react";
 import "./Download.css";
 import "../App.css";
+import { useNavigate } from "react-router-dom";
 
 export function Download(): React.ReactElement {
+  const navigate = useNavigate();
+
   const { ipcRenderer } = window.electron;
 
   const [startTime, setStartTime] = useState(0);
@@ -28,10 +31,10 @@ export function Download(): React.ReactElement {
       ipcRenderer.on("DOWNLOAD_DONE", () => {
         const waitTime = 1000 - (Date.now() - startTime);
         if (waitTime > 0) {
-          const timeout = setTimeout(() => setStep("done"), waitTime);
+          const timeout = setTimeout(() => navigate("/action"), waitTime);
           listeners.push(() => clearTimeout(timeout));
         } else {
-          setStep("done");
+          navigate("/action");
         }
       }),
     );
@@ -43,7 +46,7 @@ export function Download(): React.ReactElement {
   });
 
   return (
-    <div className="page">
+    <div className="page download-page">
       <div className="download-progress">
         <div className="download-progress-bar" style={{ width: `${progress * 100}%` }} />
       </div>
