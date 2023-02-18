@@ -63,6 +63,7 @@ export const download = async (event: IpcMainInvokeEvent): Promise<void> => {
   });
 
   res.body.on("end", () => {
+    if (!existsSync(getConfigDir())) mkdirSync(getConfigDir());
     writeFileSync(entryPoint, Buffer.concat(chunks));
 
     event.sender.send("DOWNLOAD_DONE");
