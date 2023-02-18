@@ -55,7 +55,7 @@ export async function plug(platform: DiscordPlatform): Promise<boolean> {
 export async function unplug(platform: DiscordPlatform): Promise<boolean> {
   const { plugged, path } = await getInstallation(platform);
   if (!path) return false;
-  if (!plugged) return false;
+  if (!plugged) return true;
   uninject(path);
   return true;
 }
