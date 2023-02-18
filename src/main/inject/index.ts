@@ -19,13 +19,17 @@ const checkInstalled = (appDir: string): boolean => existsSync(join(appDir, ".."
 const checkPlugged = (appDir: string): boolean => existsSync(join(appDir, "..", "app.orig.asar"));
 
 async function getInstallation(platform: DiscordPlatform): Promise<PlatformData> {
-  const path = await platformModule.getAppDir(platform);
-  if (!path) return { installed: false, plugged: false, path: null };
-  const installed = checkInstalled(path);
-  if (!installed) return { installed: false, plugged: false, path: null };
-  const plugged = checkPlugged(path);
+  try {
+    const path = await platformModule.getAppDir(platform);
+    if (!path) return { installed: false, plugged: false, path: null };
+    const installed = checkInstalled(path);
+    if (!installed) return { installed: false, plugged: false, path: null };
+    const plugged = checkPlugged(path);
 
-  return { installed, plugged, path };
+    return { installed, plugged, path };
+  } catch {
+    return { installed: false, plugged: false, path: null };
+  }
 }
 
 export async function listInstallations(): Promise<Record<DiscordPlatform, PlatformData>> {

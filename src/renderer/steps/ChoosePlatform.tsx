@@ -25,6 +25,7 @@ export function ChoosePlatform({
     <div className="page platform-page">
       <div className="platform-page-header">Choose Platforms</div>
       <div className="choose-platform">
+        {/* TODO: handle no platforms available */}
         {availablePlatforms.map((platform) => (
           <div
             key={platform}
