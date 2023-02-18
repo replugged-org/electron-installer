@@ -1,5 +1,10 @@
-import { copyFile, mkdir, rename, rm, stat, writeFile } from "fs/promises";
+import { mkdir, rename, rm, stat, writeFile } from "fs/promises";
 import { join, sep } from "path";
+import fetch from "node-fetch";
+import { IpcMainInvokeEvent } from "electron";
+
+const DOWNLOAD_URL =
+  "https://github.com/replugged-org/replugged/releases/latest/download/replugged.asar";
 
 export const isDiscordInstalled = async (appDir: string): Promise<boolean> => {
   try {
@@ -52,13 +57,32 @@ const getConfigDir = (): string => {
   }
 };
 
-export const download = async (): Promise<boolean> => {
+export const download = async (event: IpcMainInvokeEvent): Promise<void> => {
   const entryPoint = join(getConfigDir(), "replugged.asar");
 
-  // TODO: Download replugged.asar, store somewhere, update path here
-  await copyFile("PATH_TO_REPLUGGED", entryPoint);
+  const res = await fetch(DOWNLOAD_URL).catch(() => {
+    event.sender.send("DOWNLOAD_ERROR");
+  });
+  if (!res) return;
+  if (!res.body) return;
 
-  return true;
+  event.sender.send("DOWNLOAD_PROGRESS", 0);
+
+  // Emit progress events
+  const total = Number(res.headers.get("content-length"));
+  const chunks: Buffer[] = [];
+  let downloaded = 0;
+  res.body.on("data", (chunk) => {
+    chunks.push(chunk);
+    downloaded += chunk.length;
+    event.sender.send("DOWNLOAD_PROGRESS", downloaded / total);
+  });
+
+  res.body.on("end", async () => {
+    await writeFile(entryPoint, Buffer.concat(chunks));
+
+    event.sender.send("DOWNLOAD_DONE");
+  });
 };
 
 export const inject = async (appDir: string): Promise<boolean> => {

@@ -7,16 +7,11 @@
  * `./src/main.js` using webpack. This gives us some performance wins.
  */
 import path from "path";
-import { BrowserWindow, app, ipcMain, shell } from "electron";
+import { BrowserWindow, app, shell } from "electron";
 import { resolveHtmlPath } from "./util";
-import { IpcEvents } from "./types";
-import { listInstallations } from "./inject";
+import "./ipc";
 
 let mainWindow: BrowserWindow | null = null;
-
-ipcMain.handle(IpcEvents.GET_PLATFORMS, async () => {
-  return await listInstallations();
-});
 
 if (process.env.NODE_ENV === "production") {
   const sourceMapSupport = require("source-map-support");

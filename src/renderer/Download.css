@@ -1,0 +1,16 @@
+.download-container {
+  width: 100%;
+}
+
+.download-progress {
+  height: 10px;
+  background-color: #ddd;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.download-progress-bar {
+  height: 100%;
+  background-color: #7289da;
+  width: 0;
+}

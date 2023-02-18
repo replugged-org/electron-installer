@@ -13,9 +13,5 @@ export type PlatformData =
       path: string;
     };
 
-export enum IpcEvents {
-  GET_PLATFORMS = "GET_PLATFORMS",
-  DOWNLOAD = "DOWNLOAD",
-  PLUG = "PLUG",
-  UNPLUG = "UNPLUG",
-}
+export type IpcEvents = "GET_PLATFORMS" | "DOWNLOAD" | "PLUG" | "UNPLUG";
+export type IpcMainEvents = "DOWNLOAD_PROGRESS" | "DOWNLOAD_DONE" | "DOWNLOAD_ERROR";

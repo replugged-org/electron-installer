@@ -33,7 +33,7 @@ export async function listInstallations(): Promise<Record<DiscordPlatform, Platf
     await Promise.all(
       PLATFORMS.map(async (platform) => [platform, await getInstallation(platform)]),
     ),
-  );
+  ) as Record<DiscordPlatform, PlatformData>;
 }
 
 export async function plug(platform: DiscordPlatform): Promise<boolean> {
