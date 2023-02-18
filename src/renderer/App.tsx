@@ -1,8 +1,10 @@
 import { Route, MemoryRouter as Router, Routes } from "react-router-dom";
 import "./App.css";
-import { ChooseAction, Download, License } from "./steps";
+import { ChooseAction, ChoosePlatform, Download, License } from "./steps";
 import logo from "../../assets/logo.png";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { DiscordPlatform } from "./types";
+import { getPlatforms } from "./util";
 
 function Header(): React.ReactElement {
   return (
@@ -15,6 +17,21 @@ function Header(): React.ReactElement {
 
 export default function App(): React.ReactElement {
   const [action, setAction] = useState<"plug" | "unplug">("plug");
+  const [platforms, setPlatforms] = useState<DiscordPlatform[]>([]);
+  const [availablePlatforms, setAvailablePlatforms] = useState<DiscordPlatform[]>([]);
+
+  useEffect(() => {
+    getPlatforms().then((data) => {
+      const platforms = Object.entries(data)
+        .filter(([, value]) => value.installed)
+        .map(([key]) => key as DiscordPlatform);
+
+      setAvailablePlatforms(platforms);
+      if (platforms[0]) {
+        setPlatforms([platforms[0]]);
+      }
+    });
+  }, []);
 
   return (
     <Router>
@@ -24,6 +41,16 @@ export default function App(): React.ReactElement {
           <Route path="/" element={<License />} />
           <Route path="/download" element={<Download />} />
           <Route path="/action" element={<ChooseAction action={action} setAction={setAction} />} />
+          <Route
+            path="/platform"
+            element={
+              <ChoosePlatform
+                availablePlatforms={availablePlatforms}
+                platforms={platforms}
+                setPlatforms={setPlatforms}
+              />
+            }
+          />
         </Routes>
       </div>
     </Router>

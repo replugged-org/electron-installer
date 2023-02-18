@@ -85,6 +85,10 @@ body {
   box-sizing: border-box;
 }
 
+.button-secondary {
+  background-color: var(--background-secondary);
+}
+
 .button:hover {
   -webkit-filter: brightness(0.9);
   filter: brightness(0.9);
