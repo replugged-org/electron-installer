@@ -1,6 +1,7 @@
 name: Publish
 
 on:
+  workflow_dispatch:
   push:
     tags:
       - "v*"
@@ -43,8 +44,9 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
-      - name: Build
+      - name: Postinstall and Build
         run: |
+          pnpm postinstall
           pnpm run build
 
       - name: Publish releases
