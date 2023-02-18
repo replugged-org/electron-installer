@@ -1,4 +1,4 @@
-import { mkdir, rename, rm, stat, writeFile } from "fs/promises";
+import { existsSync, mkdirSync, renameSync, rmSync, writeFileSync } from "original-fs";
 import { join, sep } from "path";
 import fetch from "node-fetch";
 import { IpcMainInvokeEvent } from "electron";
@@ -6,30 +6,23 @@ import { IpcMainInvokeEvent } from "electron";
 const DOWNLOAD_URL =
   "https://github.com/replugged-org/replugged/releases/latest/download/replugged.asar";
 
-export const isDiscordInstalled = async (appDir: string): Promise<boolean> => {
-  try {
-    await stat(appDir);
-    return true;
-  } catch {
-    return false;
-  }
-};
-
-// If app.orig.asar but no app.asar, move app.orig.asar to app.asar
-// Fixes a case where app.asar was deleted (unplugged) but app.orig.asar couldn't be moved back
-export const correctMissingMainAsar = async (appDir: string): Promise<boolean> => {
-  try {
-    await stat(join(appDir, "..", "app.orig.asar"));
+const moveToOrig = (appDir: string): boolean => {
+  // Check if we need to move app.asar to app.orig.asar
+  if (!existsSync(join(appDir, "..", "app.orig.asar"))) {
     try {
-      await stat(join(appDir, "..", "app.asar"));
+      renameSync(appDir, join(appDir, "..", "app.orig.asar"));
     } catch {
-      try {
-        await rename(join(appDir, "..", "app.orig.asar"), join(appDir, "..", "app.asar"));
-      } catch {
-        return false;
-      }
+      return false;
     }
-  } catch {}
+  }
+
+  // In case app.asar still exists, delete it
+  if (existsSync(appDir)) {
+    rmSync(appDir, {
+      recursive: true,
+      force: true,
+    });
+  }
 
   return true;
 };
@@ -69,56 +62,41 @@ export const download = async (event: IpcMainInvokeEvent): Promise<void> => {
     event.sender.send("DOWNLOAD_PROGRESS", downloaded / total);
   });
 
-  res.body.on("end", async () => {
-    await writeFile(entryPoint, Buffer.concat(chunks));
+  res.body.on("end", () => {
+    writeFileSync(entryPoint, Buffer.concat(chunks));
 
     event.sender.send("DOWNLOAD_DONE");
   });
 };
 
-export const inject = async (appDir: string): Promise<boolean> => {
+export const inject = (appDir: string): boolean => {
   const entryPoint = join(getConfigDir(), "replugged.asar");
-
-  if (!(await correctMissingMainAsar(appDir))) return false;
-  if (!(await isDiscordInstalled(appDir))) return false;
 
   if (appDir.includes("flatpak")) {
     // TODO
     return false;
   }
 
-  try {
-    await rename(appDir, join(appDir, "..", "app.orig.asar"));
-  } catch {
-    return false;
-  }
+  if (!moveToOrig(appDir)) return false;
 
-  await mkdir(appDir);
-  await Promise.all([
-    writeFile(
-      join(appDir, "index.js"),
-      `require("${entryPoint.replace(RegExp(sep.repeat(2), "g"), "/")}")`,
-    ),
-    writeFile(
-      join(appDir, "package.json"),
-      JSON.stringify({
-        main: "index.js",
-        name: "discord",
-      }),
-    ),
-  ]);
+  mkdirSync(appDir);
+  writeFileSync(
+    join(appDir, "index.js"),
+    `require("${entryPoint.replace(RegExp(sep.repeat(2), "g"), "/")}")`,
+  );
+  writeFileSync(
+    join(appDir, "package.json"),
+    JSON.stringify({
+      main: "index.js",
+      name: "discord",
+    }),
+  );
 
   return true;
 };
 
-export const uninject = async (appDir: string): Promise<boolean> => {
-  if (
-    !(await isDiscordInstalled(appDir)) ||
-    !(await isDiscordInstalled(join(appDir, "..", "app.orig.asar")))
-  )
-    return false;
-
-  await rm(appDir, { recursive: true, force: true });
-  await rename(join(appDir, "..", "app.orig.asar"), appDir);
+export const uninject = (appDir: string): boolean => {
+  rmSync(appDir, { recursive: true, force: true });
+  renameSync(join(appDir, "..", "app.orig.asar"), appDir);
   return true;
 };

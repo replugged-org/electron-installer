@@ -3,7 +3,7 @@ import { join } from "path";
 import * as darwin from "./platforms/darwin";
 import * as linux from "./platforms/linux";
 import * as win32 from "./platforms/win32";
-import { existsSync } from "fs";
+import { existsSync } from "original-fs";
 import { DiscordPlatform, PLATFORMS, PlatformData } from "../types";
 import { inject, uninject } from "./injector";
 
@@ -39,13 +39,17 @@ export async function listInstallations(): Promise<Record<DiscordPlatform, Platf
 export async function plug(platform: DiscordPlatform): Promise<boolean> {
   const { plugged, path } = await getInstallation(platform);
   if (!path) return false;
-  if (plugged) await uninject(path);
-  return await inject(path);
+  if (plugged) {
+    uninject(path);
+    const { plugged } = await getInstallation(platform);
+    if (plugged) return false;
+  }
+  return inject(path);
 }
 
 export async function unplug(platform: DiscordPlatform): Promise<boolean> {
   const { plugged, path } = await getInstallation(platform);
   if (!path) return false;
   if (!plugged) return false;
-  return await uninject(path);
+  return uninject(path);
 }

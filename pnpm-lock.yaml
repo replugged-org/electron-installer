@@ -8987,7 +8987,7 @@ packages:
     dev: true
 
   github.com/dmitmel/eslint-config-dmitmel/690f1b1121d342fcc8ee511ca9f2af7502f53db6_eslint@8.34.0:
-    resolution: {tarball: https://codeload.github.com/dmitmel/eslint-config-dmitmel/tar.gz/690f1b1121d342fcc8ee511ca9f2af7502f53db6}
+    resolution: {commit: 690f1b1121d342fcc8ee511ca9f2af7502f53db6, repo: git+ssh://git@github.com/dmitmel/eslint-config-dmitmel.git, type: git}
     id: github.com/dmitmel/eslint-config-dmitmel/690f1b1121d342fcc8ee511ca9f2af7502f53db6
     name: eslint-config-dmitmel
     version: 8.2.2
