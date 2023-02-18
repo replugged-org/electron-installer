@@ -21,9 +21,9 @@ export function Progress({
     platforms.forEach(async (platform) => {
       const res = await doAction(platform, action);
       if (res) {
-        setDone([...done, platform]);
+        setDone((prev) => [...prev, platform]);
       } else {
-        setError([...error, platform]);
+        setError((prev) => [...prev, platform]);
       }
     });
   }, []);
