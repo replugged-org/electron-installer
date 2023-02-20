@@ -13,16 +13,32 @@ export function ChooseAction({
     <div className="page action-page">
       <div className="action-page-header">Choose Action</div>
       <div className="choose-action">
-        <div
-          className={`button action-button ${action === "plug" ? "action-button-active" : ""}`}
-          onClick={() => setAction("plug")}>
+        <label
+          htmlFor="radio-plug"
+          className={`button action-button ${action === "plug" ? "action-button-active" : ""}`}>
+          <input
+            id="radio-plug"
+            type="radio"
+            name="action"
+            value="plug"
+            checked={action === "plug"}
+            onChange={() => setAction("plug")}
+          />
           <span>Plug</span>
-        </div>
-        <div
-          className={`button action-button ${action === "unplug" ? "action-button-active" : ""}`}
-          onClick={() => setAction("unplug")}>
+        </label>
+        <label
+          htmlFor="radio-unplug"
+          className={`button action-button ${action === "unplug" ? "action-button-active" : ""}`}>
+          <input
+            id="radio-unplug"
+            type="radio"
+            name="action"
+            value="unplug"
+            checked={action === "unplug"}
+            onChange={() => setAction("unplug")}
+          />
           <span>Unplug</span>
-        </div>
+        </label>
       </div>
       <div className="action-bottom">
         <Link to="/platform" className="button">

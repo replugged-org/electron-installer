@@ -19,6 +19,17 @@
 .platform-button {
   width: 100%;
   background-color: var(--background-secondary);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.platform-button input[type="checkbox"] {
+  position: absolute;
+  left: 0;
+  margin: 0px;
+  margin-left: 10px;
 }
 
 .platform-button-active {

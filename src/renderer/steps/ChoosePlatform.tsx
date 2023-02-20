@@ -33,14 +33,22 @@ export function ChoosePlatform({
         <>
           <div className="choose-platform">
             {availablePlatforms.map((platform) => (
-              <div
+              <label
+                htmlFor={`checkbox-${platform}`}
                 key={platform}
                 className={`button platform-button ${
                   platforms.includes(platform) ? "platform-button-active" : ""
-                }`}
-                onClick={() => togglePlatform(platform)}>
+                }`}>
+                <input
+                  id={`checkbox-${platform}`}
+                  type="checkbox"
+                  name="platform"
+                  value={platform}
+                  checked={platforms.includes(platform)}
+                  onChange={() => togglePlatform(platform)}
+                />
                 <span>{PLATFORM_LABELS[platform]}</span>
-              </div>
+              </label>
             ))}
           </div>
           <div className="platform-note">Please quit Discord before continuing.</div>
