@@ -50,6 +50,7 @@
     ]
   },
   "devDependencies": {
+    "@electron/notarize": "^1.2.3",
     "@electron/rebuild": "^3.2.10",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.10",
     "@svgr/webpack": "^6.5.1",
@@ -113,7 +114,7 @@
     ],
     "mac": {
       "target": {
-        "target": "zip",
+        "target": "default",
         "arch": [
           "arm64",
           "x64"
