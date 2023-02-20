@@ -36,6 +36,17 @@
   background-color: var(--blurple);
 }
 
+.platform-warning {
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
+  width: fit-content;
+  margin-top: 10px;
+  border: 1px solid rgba(240, 178, 50, 1);
+  border-radius: 5px;
+  padding: 10px;
+  background-color: rgba(240, 178, 50, 0.1);
+}
+
 .platform-bottom {
   width: 100%;
   margin-top: 10px;

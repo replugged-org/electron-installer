@@ -3,7 +3,7 @@ import "./App.css";
 import { ChooseAction, ChoosePlatform, Download, License, Progress } from "./steps";
 import logo from "../../assets/logo.png";
 import { useEffect, useState } from "react";
-import { DiscordPlatform } from "./types";
+import { DiscordPlatform, PlatformData } from "./types";
 import { getPlatforms } from "./util";
 
 function Header(): React.ReactElement {
@@ -18,24 +18,25 @@ function Header(): React.ReactElement {
 export default function App(): React.ReactElement {
   const [action, setAction] = useState<"plug" | "unplug">("plug");
   const [platforms, setPlatforms] = useState<DiscordPlatform[]>([]);
-  const [availablePlatforms, setAvailablePlatforms] = useState<DiscordPlatform[]>([]);
+  const [platformData, setPlatformData] = useState<Record<DiscordPlatform, PlatformData> | null>(
+    null,
+  );
 
   const init = async (reset = false): Promise<void> => {
     if (reset) {
       setAction("plug");
       setPlatforms([]);
-      setAvailablePlatforms([]);
+      setPlatformData(null);
     }
 
     const data = await getPlatforms();
-    const platforms = Object.entries(data)
-      .filter(([, value]) => value.installed)
+    setPlatformData(data);
+
+    const unplugged = Object.entries(data)
+      .filter(([, value]) => value.installed && !value.plugged)
       .map(([key]) => key as DiscordPlatform);
 
-    setAvailablePlatforms(platforms);
-    if (platforms[0]) {
-      setPlatforms([platforms[0]]);
-    }
+    setPlatforms(unplugged);
   };
 
   useEffect(() => {
@@ -58,7 +59,7 @@ export default function App(): React.ReactElement {
             path="/platform"
             element={
               <ChoosePlatform
-                availablePlatforms={availablePlatforms}
+                platformData={platformData}
                 platforms={platforms}
                 setPlatforms={setPlatforms}
                 init={init}

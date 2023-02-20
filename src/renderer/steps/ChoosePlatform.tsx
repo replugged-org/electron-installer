@@ -1,22 +1,42 @@
 import { Link } from "react-router-dom";
-import { DiscordPlatform } from "../types";
+import { DiscordPlatform, PlatformData } from "../types";
 import "./ChoosePlatform.css";
 import "../App.css";
 import { PLATFORM_LABELS } from "../util";
 import { useState } from "react";
 
 export function ChoosePlatform({
-  availablePlatforms,
+  platformData,
   platforms,
   setPlatforms,
   init,
 }: {
-  availablePlatforms: DiscordPlatform[];
+  platformData: Record<DiscordPlatform, PlatformData> | null;
   platforms: DiscordPlatform[];
   setPlatforms: (platforms: DiscordPlatform[]) => void;
   init: (reset?: boolean) => Promise<void>;
 }): React.ReactElement {
   const [isFetchingPlatforms, setIsFetchingPlatforms] = useState(false);
+
+  const availablePlatforms = (
+    platformData
+      ? Object.entries(platformData)
+          .filter(([, v]) => v.installed)
+          .map((x) => x[0])
+      : []
+  ) as DiscordPlatform[];
+
+  const pluggedPlatforms = (
+    platformData
+      ? Object.entries(platformData)
+          .filter(([, v]) => v.plugged)
+          .map((x) => x[0])
+      : []
+  ) as DiscordPlatform[];
+
+  const hasAlreadyPluggedPlatform = platforms.some((platform) =>
+    pluggedPlatforms.includes(platform),
+  );
 
   const togglePlatform = (platform: DiscordPlatform): void => {
     if (platforms.includes(platform)) {
@@ -52,6 +72,12 @@ export function ChoosePlatform({
             ))}
           </div>
           <div className="platform-note">Please quit Discord before continuing.</div>
+          {hasAlreadyPluggedPlatform && (
+            <div className="platform-warning">
+              One of the selected platforms is already plugged or has another client mod installed.
+              Plugging it again will overwrite the existing mod.
+            </div>
+          )}
           <div className="platform-bottom">
             <Link to="/action" className="button button-secondary">
               Back
