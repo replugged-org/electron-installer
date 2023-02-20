@@ -1,7 +1,7 @@
 {
   "name": "replugged-electron-installer",
   "description": "Installer GUI for Replugged",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "license": "MIT",
   "author": {
     "name": "Replugged",
