@@ -60,6 +60,7 @@ export default function App(): React.ReactElement {
             element={
               <ChoosePlatform
                 platformData={platformData}
+                action={action}
                 platforms={platforms}
                 setPlatforms={setPlatforms}
                 init={init}

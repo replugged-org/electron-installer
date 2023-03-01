@@ -7,11 +7,13 @@ import { useState } from "react";
 
 export function ChoosePlatform({
   platformData,
+  action,
   platforms,
   setPlatforms,
   init,
 }: {
   platformData: Record<DiscordPlatform, PlatformData> | null;
+  action: "plug" | "unplug";
   platforms: DiscordPlatform[];
   setPlatforms: (platforms: DiscordPlatform[]) => void;
   init: (reset?: boolean) => Promise<void>;
@@ -72,7 +74,7 @@ export function ChoosePlatform({
             ))}
           </div>
           <div className="platform-note">Please quit Discord before continuing.</div>
-          {hasAlreadyPluggedPlatform && (
+          {action === "plug" && hasAlreadyPluggedPlatform && (
             <div className="platform-warning">
               One of the selected platforms is already plugged or has another client mod installed.
               Plugging it again will overwrite the existing mod.
