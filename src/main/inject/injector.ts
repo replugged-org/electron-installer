@@ -3,8 +3,7 @@ import { join, sep } from "path";
 import fetch from "node-fetch";
 import { IpcMainInvokeEvent } from "electron";
 
-const DOWNLOAD_URL =
-  "https://github.com/replugged-org/replugged/releases/latest/download/replugged.asar";
+const DOWNLOAD_URL = "https://replugged.dev/api/v1/store/dev.replugged.Replugged?type=install";
 
 const moveToOrig = (appDir: string): void => {
   // Check if we need to move app.asar to app.orig.asar
